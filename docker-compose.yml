@@ -116,15 +116,40 @@ services:
       - bute-ai-network     
 
 
-  # WhoAmI
-  whoami:
-    image: traefik/whoami
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3.9.12
     ports:
-      - "81:80"
-    labels:
-      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
-    networks:
-      - bute-ai-network
+      - "5672:5672"
+
+  
+  # RabbitMQ - Management
+  rabbitmq-ui:
+    image: rabbitmq:3.9.12-management
+    ports:
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    depends_on:
+      - rabbitmq
+
+
+  # Redis
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+
+  # Redis - Commander
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    ports:
+      - "8081:8081"
+    environment:
+      REDIS_HOSTS: redis
+      REDIS_PORT: 6379
 
 
   # Prometheus
@@ -165,6 +190,7 @@ services:
 volumes:
   gateway-volume:
   grafana-data:
+  kafka_data:
 
 networks:
   bute-ai-network:

@@ -21,3 +21,23 @@ scrape_configs:
     metrics_path: '/api/transfer/metrics'
     static_configs:
       - targets: ['transfer:8000']
+
+  - job_name: 'kyc-service'
+    metrics_path: '/api/kyc/metrics'
+    static_configs:
+      - targets: ['kyc:8080']
+
+  - job_name: 'payment-service'
+    metrics_path: '/api/payment/metrics'
+    static_configs:
+      - targets: ['payment:80']
+
+  - job_name: 'chat-service'
+    metrics_path: '/api/chat/metrics'
+    static_configs:
+      - targets: ['chat:8000']
+
+  - job_name: 'processor-service'
+    metrics_path: '/api/processor/metrics'
+    static_configs:
+      - targets: ['processor:8000']

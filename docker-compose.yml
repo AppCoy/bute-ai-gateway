@@ -1,6 +1,5 @@
 version: '3.8'
 services:
-
   # API Gateway
   gateway:
     image: traefik:latest
@@ -10,8 +9,43 @@ services:
     networks:
       - bute-ai-network
     volumes:
-       - $PWD/traefik.yml:/etc/traefik/traefik.yml
+       - ./traefik.yml:/etc/traefik/traefik.yml
        - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.http.routers.swagger.rule=PathPrefix(`/api`) && Path(`/swagger`)"
+      - "traefik.http.routers.swagger.middlewares=strip-prefix"
+      - "traefik.http.middlewares.strip-prefix.stripprefixregex.regex=/api/(.*)"
+      - "traefik.http.middlewares.strip-prefix.stripprefixregex.replacement=/$$1"
+
+  # Core - Service
+  core:
+    build:
+      context: ./bute-ai-core
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.core.rule=PathPrefix(`/api/core`)"
+      - "traefik.http.services.core.loadbalancer.server.port=8000"
+      - "traefik.http.services.core.loadbalancer.server.scheme=http"
+      - "traefik.http.services.core.loadbalancer.sticky=true"
+      - "traefik.http.services.core.loadbalancer.sticky.cookie.name=core_cookie"
+    networks:
+      - bute-ai-network
+
+  # Transfer - Service
+  transfer:
+    build:
+      context: ./bute-ai-transfer
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.transfer.rule=PathPrefix(`/api/transfer`)"
+      - "traefik.http.services.transfer.loadbalancer.server.port=8000"
+      - "traefik.http.services.transfer.loadbalancer.server.scheme=http"
+      - "traefik.http.services.transfer.loadbalancer.sticky=true"
+      - "traefik.http.services.transfer.loadbalancer.sticky.cookie.name=transfer_cookie"
+    networks:
+      - bute-ai-network
 
   # WhoAmI
   whoami:

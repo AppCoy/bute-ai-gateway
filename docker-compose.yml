@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+
+  # API Gateway
+  gateway:
+    image: traefik:latest
+    ports:
+      - "80:80"
+      - "8080:8080"
+    networks:
+      - bute-ai-network
+    volumes:
+       - $PWD/traefik.yml:/etc/traefik/traefik.yml
+       - /var/run/docker.sock:/var/run/docker.sock
+
+  # WhoAmI
+  whoami:
+    image: traefik/whoami
+    ports:
+      - "81:80"
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
+    networks:
+      - bute-ai-network
+
+volumes:
+  gateway-volume:
+
+networks:
+  bute-ai-network:

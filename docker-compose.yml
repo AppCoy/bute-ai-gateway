@@ -31,6 +31,20 @@ services:
       - "traefik.http.services.core.loadbalancer.sticky.cookie.name=core_cookie"
     networks:
       - bute-ai-network
+    
+  auth:
+    build:
+      context: ./bute-ai-auth
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auth.rule=PathPrefix(`/api/auth`)"
+      - "traefik.http.services.auth.loadbalancer.server.port=8080"
+      - "traefik.http.services.auth.loadbalancer.server.scheme=http"
+      - "traefik.http.services.auth.loadbalancer.sticky=true"
+      - "traefik.http.services.auth.loadbalancer.sticky.cookie.name=auth_cookie"
+    networks:
+      - bute-ai-network
 
   # Transfer - Service
   transfer:

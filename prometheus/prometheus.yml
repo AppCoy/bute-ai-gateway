@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'core-service'
+    metrics_path: '/api/core/metrics'
+    static_configs:
+      - targets: ['core:8000']
+
+  - job_name: 'auth-service'
+    metrics_path: '/api/auth/metrics'
+    static_configs:
+      - targets: ['auth:8080']
+
+  - job_name: 'blob-service'
+    metrics_path: '/api/blob/metrics'
+    static_configs:
+      - targets: ['blob:8080']
+
+  - job_name: 'transfer-service'
+    metrics_path: '/api/transfer/metrics'
+    static_configs:
+      - targets: ['transfer:8000']

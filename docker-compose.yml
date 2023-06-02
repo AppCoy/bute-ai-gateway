@@ -113,7 +113,23 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     networks:
-      - bute-ai-network     
+      - bute-ai-network  
+
+
+  # Chat - Service
+  chat:
+    build:
+      context: ./bute-ai-chat
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chat.rule=PathPrefix(`/api/chat`)"
+      - "traefik.http.services.chat.loadbalancer.server.port=3001"
+      - "traefik.http.services.chat.loadbalancer.server.scheme=http"
+      - "traefik.http.services.chat.loadbalancer.sticky=true"
+      - "traefik.http.services.chat.loadbalancer.sticky.cookie.name=chat_cookie"
+    networks:
+      - bute-ai-network          
 
 
   # RabbitMQ

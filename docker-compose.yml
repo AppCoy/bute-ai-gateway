@@ -82,6 +82,22 @@ services:
       - bute-ai-network
 
 
+  # Transfer - Service
+  kyc:
+    build:
+      context: ./bute-ai-kyc
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kyc.rule=PathPrefix(`/api/kyc`)"
+      - "traefik.http.services.kyc.loadbalancer.server.port=8080"
+      - "traefik.http.services.kyc.loadbalancer.server.scheme=http"
+      - "traefik.http.services.kyc.loadbalancer.sticky=true"
+      - "traefik.http.services.kyc.loadbalancer.sticky.cookie.name=kyc_cookie"
+    networks:
+      - bute-ai-network
+
+
   # WhoAmI
   whoami:
     image: traefik/whoami

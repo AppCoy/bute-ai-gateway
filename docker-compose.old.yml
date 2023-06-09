@@ -20,7 +20,9 @@ services:
 
   # Core - Service
   core:
-    image: osinnowo/bute-ai:core
+    build:
+      context: ./bute-ai-core
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.core.rule=PathPrefix(`/api/core`)"
@@ -34,7 +36,9 @@ services:
 
   # Auth - Service
   auth:
-    image: osinnowo/bute-ai:auth
+    build:
+      context: ./bute-ai-auth
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.auth.rule=PathPrefix(`/api/auth`)"
@@ -48,7 +52,9 @@ services:
 
   # Blob - Service
   blob:
-    image: osinnowo/bute-ai:blob
+    build:
+      context: ./bute-ai-blob
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.blob.rule=PathPrefix(`/api/blob`)"
@@ -62,7 +68,9 @@ services:
 
   # Transfer - Service
   transfer:
-    image: osinnowo/bute-ai:transfer
+    build:
+      context: ./bute-ai-transfer
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.transfer.rule=PathPrefix(`/api/transfer`)"
@@ -74,9 +82,11 @@ services:
       - bute-ai-network
 
 
-  # KYC - Service
+  # Transfer - Service
   kyc:
-    image: osinnowo/bute-ai:kyc
+    build:
+      context: ./bute-ai-kyc
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.kyc.rule=PathPrefix(`/api/kyc`)"
@@ -90,7 +100,9 @@ services:
 
   # Payment - Service
   payment:
-    image: osinnowo/bute-ai:payment
+    build:
+      context: ./bute-ai-payment
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.payment.rule=PathPrefix(`/api/payment`)"
@@ -106,7 +118,9 @@ services:
 
   # Chat - Service
   chat:
-    image: osinnowo/bute-ai:chat
+    build:
+      context: ./bute-ai-chat
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.chat.rule=PathPrefix(`/api/chat`)"

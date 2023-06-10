@@ -89,19 +89,19 @@ services:
 
 
   # Payment - Service
-  payment:
-    image: osinnowo/bute-ai:payment
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.payment.rule=PathPrefix(`/api/payment`)"
-      - "traefik.http.services.payment.loadbalancer.server.port=80"
-      - "traefik.http.services.payment.loadbalancer.server.scheme=http"
-      - "traefik.http.services.payment.loadbalancer.sticky=true"
-      - "traefik.http.services.payment.loadbalancer.sticky.cookie.name=payment_cookie"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    networks:
-      - bute-ai-network  
+  # payment:
+  #   image: osinnowo/bute-ai:payment
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.payment.rule=PathPrefix(`/api/payment`)"
+  #     - "traefik.http.services.payment.loadbalancer.server.port=80"
+  #     - "traefik.http.services.payment.loadbalancer.server.scheme=http"
+  #     - "traefik.http.services.payment.loadbalancer.sticky=true"
+  #     - "traefik.http.services.payment.loadbalancer.sticky.cookie.name=payment_cookie"
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #   networks:
+  #     - bute-ai-network  
 
 
   # Chat - Service
@@ -195,10 +195,24 @@ services:
     networks:
       - bute-ai-network   
 
+  # Portainer
+  portainer:
+    image: portainer/portainer-ce
+    ports:
+      - 9000:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer:/data
+    environment:
+      - ADMIN_USERNAME=master
+      - ADMIN_PASSWORD=M@st37!!
+
+
 volumes:
   gateway-volume:
   grafana-data:
   kafka_data:
+  portainer:
 
 networks:
   bute-ai-network:

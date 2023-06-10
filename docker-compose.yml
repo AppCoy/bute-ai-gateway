@@ -195,10 +195,24 @@ services:
     networks:
       - bute-ai-network   
 
+  # Portainer
+  portainer:
+    image: portainer/portainer-ce
+    ports:
+      - 9000:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer:/data
+    environment:
+      - ADMIN_USERNAME=master
+      - ADMIN_PASSWORD=M@st37!!
+
+
 volumes:
   gateway-volume:
   grafana-data:
   kafka_data:
+  portainer:
 
 networks:
   bute-ai-network:

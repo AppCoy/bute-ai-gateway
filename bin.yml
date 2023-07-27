@@ -1,0 +1,5 @@
+# To run 'run.sh' in a background (daemon mode) and log the log output to file
+nohup ./run.sh > runner.log 2>&1 &
+
+# To fix issue of the runner script in sudo 
+export RUNNER_ALLOW_RUNASROOT="1"

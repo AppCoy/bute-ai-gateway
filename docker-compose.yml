@@ -208,11 +208,42 @@ services:
       - ADMIN_PASSWORD=M@st37!!
 
 
+  # Auth - Database
+  auth-database:
+    image: postgres
+    networks:
+      - bute-ai-network
+    environment:
+      POSTGRES_DB: "auth-database"
+      POSTGRES_USER: "master"
+      POSTGRES_PASSWORD: "ku8@%3276@_!!!_*"
+    ports:
+      - '5432:5432'
+    volumes:
+      - auth-database-volume:/var/lib/postgresql/data
+
+
+  # Postgresql - Admin
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    volumes:
+      - pgadmin-volume:/var/lib/pgadmin
+    ports:
+      - '5050:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@butepay.com"
+      PGADMIN_DEFAULT_PASSWORD: "master@2026!!_!!_!!_!!"
+    networks:
+      - bute-ai-network
+
+
 volumes:
   gateway-volume:
   grafana-data:
   kafka_data:
   portainer:
+  pgadmin-volume:
+  auth-database-volume:
 
 networks:
   bute-ai-network:

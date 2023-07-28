@@ -4,7 +4,7 @@ services:
   website:
     image: osinnowo/bute-ai:website
     ports:
-      - 81:80
+      - 80:80
     networks:
       - bute-ai-network
 
@@ -12,7 +12,7 @@ services:
   gateway:
     image: traefik:latest
     ports:
-      - "80:80"
+      - "81:80"
       - "8080:8080"
     networks:
       - bute-ai-network

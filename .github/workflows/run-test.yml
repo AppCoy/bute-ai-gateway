@@ -13,17 +13,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
-    - name: Copy file to server
-      run: |
-        # Replace the following placeholders with the actual values:
-        # <USERNAME>: Your server's SSH username
-        # <SERVER_IP>: Your server's IP address or domain
-        # <PATH_TO_SSH_KEY>: Path to your SSH private key
-        # <LOCAL_FILE_PATH>: Path to the file you want to copy from the repository
-        # <REMOTE_FILE_PATH>: Path on the server where you want to copy the file
+      - name: Copy file to server
+        run: |
+          # Replace the following placeholders with the actual values:
+          # <USERNAME>: Your server's SSH username
+          # <SERVER_IP>: Your server's IP address or domain
+          # <PATH_TO_SSH_KEY>: Path to your SSH private key
+          # <LOCAL_FILE_PATH>: Path to the file you want to copy from the repository
+          # <REMOTE_FILE_PATH>: Path on the server where you want to copy the file
 
-        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-        scp -i ${{ secrets.PATH_TO_SSH_KEY }} ${{ secrets.LOCAL_FILE_PATH }} ${{ USERNAME }}@${{ SERVER_IP }}:${{ REMOTE_FILE_PATH }}
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          scp -i ${{ secrets.PATH_TO_SSH_KEY }} ${{ secrets.LOCAL_FILE_PATH }} ${{ USERNAME }}@${{ SERVER_IP }}:${{ REMOTE_FILE_PATH }}

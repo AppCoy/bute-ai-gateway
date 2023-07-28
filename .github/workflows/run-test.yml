@@ -16,6 +16,13 @@ jobs:
 
       - name: Install SSH client
         run: sudo apt-get install -y openssh-client
+        
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          touch ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
       - name: Copy files to server
         run: scp -r * root@46.101.238.152:/bute-ai/

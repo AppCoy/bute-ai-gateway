@@ -3,19 +3,27 @@ name: Copy File to Server
 on:
   push:
     branches:
-      - Main
+      - main
   pull_request:
     branches:
-      - Main
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted]  # Remove this line if you previously had "runs-on: ubuntu-latest"
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+      
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          touch ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
       - name: Copy file to server
         run: |
-          scp -i ${{ secrets.PATH_TO_SSH_KEY }} -v ${{ secrets.LOCAL_FILE_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.REMOTE_FILE_PATH }}
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          scp -i ${{ secrets.PATH_TO_SSH_KEY }} ${{ secrets.LOCAL_FILE_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.REMOTE_FILE_PATH }}

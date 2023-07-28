@@ -15,13 +15,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-      
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          touch ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
 
       - name: Copy file to server
         run: |

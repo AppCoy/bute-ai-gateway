@@ -18,5 +18,4 @@ jobs:
 
       - name: Copy file to server
         run: |
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
           scp -i ${{ secrets.PATH_TO_SSH_KEY }} -v ${{ secrets.LOCAL_FILE_PATH }} ${{ secrets.USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.REMOTE_FILE_PATH }}

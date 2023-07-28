@@ -1,5 +1,13 @@
 version: '3.8'
 services:
+  # Website
+  website:
+    image: osinnowo/bute-ai:website
+    ports:
+      - 81:80
+    networks:
+      - bute-ai-network
+
   # API Gateway
   gateway:
     image: traefik:latest

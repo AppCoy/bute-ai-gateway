@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  copy-file:
+  build:
     runs-on: ubuntu-latest
 
     steps:

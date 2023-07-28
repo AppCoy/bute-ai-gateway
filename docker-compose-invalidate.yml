@@ -1,13 +1,5 @@
 version: '3.8'
 services:
-  # Website
-  website:
-    image: osinnowo/bute-ai:website
-    ports:
-      - 81:80
-    networks:
-      - bute-ai-network
-
   # API Gateway
   gateway:
     image: traefik:latest
@@ -28,7 +20,9 @@ services:
 
   # Core - Service
   core:
-    image: osinnowo/bute-ai:core
+    build:
+      context: ./bute-ai-core
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.core.rule=PathPrefix(`/api/core`)"
@@ -42,7 +36,9 @@ services:
 
   # Auth - Service
   auth:
-    image: osinnowo/bute-ai:auth
+    build:
+      context: ./bute-ai-auth
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.auth.rule=PathPrefix(`/api/auth`)"
@@ -56,7 +52,9 @@ services:
 
   # Blob - Service
   blob:
-    image: osinnowo/bute-ai:blob
+    build:
+      context: ./bute-ai-blob
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.blob.rule=PathPrefix(`/api/blob`)"
@@ -70,7 +68,9 @@ services:
 
   # Transfer - Service
   transfer:
-    image: osinnowo/bute-ai:transfer
+    build:
+      context: ./bute-ai-transfer
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.transfer.rule=PathPrefix(`/api/transfer`)"
@@ -82,9 +82,11 @@ services:
       - bute-ai-network
 
 
-  # KYC - Service
+  # Transfer - Service
   kyc:
-    image: osinnowo/bute-ai:kyc
+    build:
+      context: ./bute-ai-kyc
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.kyc.rule=PathPrefix(`/api/kyc`)"
@@ -97,24 +99,28 @@ services:
 
 
   # Payment - Service
-  # payment:
-  #   image: osinnowo/bute-ai:payment
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.payment.rule=PathPrefix(`/api/payment`)"
-  #     - "traefik.http.services.payment.loadbalancer.server.port=80"
-  #     - "traefik.http.services.payment.loadbalancer.server.scheme=http"
-  #     - "traefik.http.services.payment.loadbalancer.sticky=true"
-  #     - "traefik.http.services.payment.loadbalancer.sticky.cookie.name=payment_cookie"
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Development
-  #   networks:
-  #     - bute-ai-network  
+  payment:
+    build:
+      context: ./bute-ai-payment
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.payment.rule=PathPrefix(`/api/payment`)"
+      - "traefik.http.services.payment.loadbalancer.server.port=80"
+      - "traefik.http.services.payment.loadbalancer.server.scheme=http"
+      - "traefik.http.services.payment.loadbalancer.sticky=true"
+      - "traefik.http.services.payment.loadbalancer.sticky.cookie.name=payment_cookie"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - bute-ai-network  
 
 
   # Chat - Service
   chat:
-    image: osinnowo/bute-ai:chat
+    build:
+      context: ./bute-ai-chat
+      dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.chat.rule=PathPrefix(`/api/chat`)"
@@ -203,55 +209,10 @@ services:
     networks:
       - bute-ai-network   
 
-  # Portainer
-  portainer:
-    image: portainer/portainer-ce
-    ports:
-      - 9000:9000
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer:/data
-    environment:
-      - ADMIN_USERNAME=master
-      - ADMIN_PASSWORD=M@st37!!
-
-
-  # Auth - Database
-  auth-database:
-    image: postgres
-    networks:
-      - bute-ai-network
-    environment:
-      POSTGRES_DB: "auth-database"
-      POSTGRES_USER: "master"
-      POSTGRES_PASSWORD: "ku8@%3276@_!!!_*"
-    ports:
-      - '5432:5432'
-    volumes:
-      - auth-database-volume:/var/lib/postgresql/data
-
-
-  # Postgresql - Admin
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    volumes:
-      - pgadmin-volume:/var/lib/pgadmin
-    ports:
-      - '5050:80'
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "admin@butepay.com"
-      PGADMIN_DEFAULT_PASSWORD: "master@2026!!_!!_!!_!!"
-    networks:
-      - bute-ai-network
-
-
 volumes:
   gateway-volume:
   grafana-data:
   kafka_data:
-  portainer:
-  pgadmin-volume:
-  auth-database-volume:
 
 networks:
   bute-ai-network:

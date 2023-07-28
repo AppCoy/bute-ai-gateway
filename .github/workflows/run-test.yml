@@ -1,6 +1,5 @@
 name: Copy Files to Server
 
-
 on:
   push:
     branches:
